@@ -1,11 +1,56 @@
 # sourcecred-analysis
 
-This repo contains some python scripts for analyzing SourceCred data output from Discourse forums (other plugins such as GitHub and Discord are not yet supported). 
+This repo contains python scripts for analyzing [SourceCred](https://github.com/sourcecred/sourcecred) data. 
 
-NOTE: this script relies on a now outdated output data format. A sample JSON file (created from the MakerDAO forums) is provided below that will work, but if you want to analyze newly generated output, the script needs to be updated. 
+Below are instructions for running two scripts in the repo:
+
+- `discourse_analysis.py`: a script for analyzing Discourse data, including ranking of posts and users by Cred score.
+- `analyze_cred_graph.py`: a script for analyzing Discourse data in graph form, including analyzing Cred flows to and from a given node in the Cred graph [WARNING: uses out-of-date version of SourceCred]. 
+
+# `discourse_analysis.py`
+
+This script parses `credResult.json`, a file automatically generated when you run a SourceCred instance. Currently it only parses Discourse data. A sample file from the [MakerDAO forum](https://forum.makerdao.com/) is provided for illustration.
+
+## Running
+
+To analyze the sample data, just run `discourse_analysis.py`. The script will output tables of the top 10 posts by Cred earned, the top 10 contributors by Cred earned, and a plot of the top users over time, as shown below. 
+
+|   Cred | Contribution                                                                                                                                  | Author   |
+|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|----------|
+|  194.9 | [#1 on [Signal Request] Should we take Emergency action to fix the peg?](https://forum.makerdao.com/t/4096/1)                                 | user     |
+|  138.5 | [#1 on MIP7c3-SP3: Domain Team Onboarding (Risk Domain Team)](https://forum.makerdao.com/t/4050/1)                                            | user     |
+|  124.3 | [#1 on Working Group: Autonomous MakerDAO](https://forum.makerdao.com/t/4036/1)                                                               | user     |
+|  115.6 | [#1 on [Signal Request] Should Real World Asset collateral onboarding be prioritised in the short term?](https://forum.makerdao.com/t/4075/1) | user     |
+|  112.9 | [#1 on [Signal Request] Should we increase USDC-A debt ceiling?](https://forum.makerdao.com/t/4068/1)                                         | user     |
+|  105.9 | [#1 on MIP23: Domain Structure and Roles](https://forum.makerdao.com/t/4021/1)                                                                | user     |
+|   93.9 | [#2 on [Signal Request] Should we increase USDC-A debt ceiling?](https://forum.makerdao.com/t/4068/2)                                         | user     |
+|   91.3 | [#1 on Optimal Bidding Strategy for Maker Auctions [research paper]](https://forum.makerdao.com/t/4033/1)                                     | user     |
+|   87.9 | [#35 on [Signal Request] Should we take Emergency action to fix the peg?](https://forum.makerdao.com/t/4096/35)                               | user     |
+|   87.4 | [#8 on Expedited Executive Vote: 2020-09-14](https://forum.makerdao.com/t/4125/8)                                                             | user     |
+
+|   Cred | Contributor    |
+|--------|----------------|
+|  310.6 | LongForWisdom  |
+|  228.2 | Primoz         |
+|  175.7 | Aaron-Bartsch  |
+|  115.3 | SebVentures    |
+|  101.8 | monet-supply   |
+|  101.6 | befitsandpiper |
+|  100.1 | mrabino1       |
+|   97.4 | NikKunkel      |
+|   96.7 | Jtathmann      |
+|   82.5 | Planet-X       |
+
+![Example Plot](top_cred_earners.jpg)
+
+# `analyze_cred_graph.py`
 
 
-# Installation
+NOTE: this script relies on a now outdated output data format. A sample JSON file (created from the MakerDAO forums) is provided below that will work, but if you want to analyze newly generated output, you'll need to update the script yourself, or try generating a JSON filt to analyze by 
+running SourceCred [v0.6.0](https://github.com/sourcecred/sourcecred/releases/tag/v0.6.0) and using the `output` command.
+
+
+## Installation
 
 `git clone https://github.com/s-ben/sourcecred-analysis.git`
 
@@ -14,7 +59,7 @@ NOTE: this script relies on a now outdated output data format. A sample JSON fil
 `pip install requirements.txt `
 
 
-# Running
+## Running
 
 The `analyze_cred_graph.py` script exposes a CLI tool that looks up a node (contribution) in the SourceCred contribution graph and provides some high-level info on cred flowing into that node from adjacent nodes. Namely a brief description of each adjacent node flowing cred to it, cred inflow per node, and the edge type.
 
